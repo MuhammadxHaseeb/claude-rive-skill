@@ -27,8 +27,7 @@ the current project (brand, app, character, states, names, events) lives in
   start. If the server isn't connected, stop and tell me instead of guessing.
 - Skill in `.claude/skills/`: `rive-animations` (animation principles). Use it for
   technique, but if it conflicts with this file, this file wins. In particular, use
-  view model data binding, not state machine inputs, and ignore its React code
-  samples unless the app is React.
+  view model data binding, not state machine inputs.
 - Before any large edit, ask me to save or duplicate the Rive file first.
 - Commit app code to git after each stage I approve.
 
@@ -81,7 +80,15 @@ Work in stages and stop for my review after each one:
 1. Inspect the imported artwork. Report the layer structure and anything that will
    block animation (merged parts, unnamed groups, unsupported SVG features).
 2. Set pivots, then build the idle state and ambient layer (for example blinking).
-3. Build the remaining states and one-shot reactions from the brief.
+3. Build the remaining states and one-shot reactions **one at a time**, in the order
+   the brief lists them. Each time I say "Do stage 3", build only the next one:
+   a. Describe the plan first: which parts move, the key poses, timing and easing.
+      Wait for my OK before touching Rive.
+   b. Build it in Rive.
+   c. Stop and tell me what to check. Apply my feedback before starting the next one,
+      and carry that feedback into the animations that follow.
+   Each time, say which animation you just built, which is next, and how many are
+   left. Stage 3 is done only when every state and reaction in the brief is approved.
 4. Build the view model and wire the state machine to it.
 5. Integrate into the app in `app/`, following the brief's event mapping.
 

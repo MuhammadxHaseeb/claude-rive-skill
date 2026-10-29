@@ -5,33 +5,27 @@ description: Use when implementing Disney's 12 animation principles with Rive in
 
 # Rive Animation Principles
 
-Implement all 12 Disney animation principles using Rive's state machine and interactive animations.
+Implement all 12 Disney animation principles using Rive's editor: timelines, the Graph
+Editor, bones, constraints and state machines.
+
+> Adapted for this template from dylantarre/animation-principles (MIT). The original's
+> runtime code samples were removed because they used legacy APIs (`rive.play()`,
+> state machine inputs). The app drives the animation only through view model data
+> binding, as described in `CLAUDE.md`; follow that for anything runtime-related.
 
 ## 1. Squash and Stretch
 
 In Rive Editor:
 - Create shape with bones
-- Animate scale X/Y with inverse relationship
+- Animate scale X/Y with inverse relationship to preserve volume
 - Key: `scaleX: 1.2` when `scaleY: 0.8`
-
-```javascript
-// Trigger from code
-rive.play('squash_stretch');
-```
 
 ## 2. Anticipation
 
-State Machine Setup:
-1. Create "Idle" state
-2. Create "Anticipate" state (wind-up pose)
-3. Create "Action" state
-4. Connect: Idle → Anticipate → Action
-
-```javascript
-const inputs = rive.stateMachineInputs('State Machine');
-const trigger = inputs.find(i => i.name === 'jump');
-trigger.fire(); // Plays anticipate → action sequence
-```
+- Add a short wind-up pose before the main action (crouch before a jump, lean back
+  before a wave)
+- Build it as the opening keys of the same animation, so one view model change or
+  trigger plays wind-up → action in sequence
 
 ## 3. Staging
 
@@ -39,12 +33,7 @@ In Rive:
 - Use artboard layers for depth
 - Apply blur/opacity to background layers
 - Use nested artboards for complex scenes
-
-```javascript
-// Control visibility
-const bgOpacity = inputs.find(i => i.name === 'bgOpacity');
-bgOpacity.value = 0.6;
-```
+- Keep one clear action readable at a time
 
 ## 4. Straight Ahead / Pose to Pose
 
@@ -68,11 +57,6 @@ In Rive Graph Editor:
 - Apply easing: Cubic, Quad, Bounce
 - Adjust bezier handles for custom curves
 
-```javascript
-// Runtime speed control
-rive.play('animation', { speed: 0.5 });
-```
-
 ## 7. Arc
 
 In Rive:
@@ -82,34 +66,17 @@ In Rive:
 
 ## 8. Secondary Action
 
-State Machine approach:
-```javascript
-// Listen for state changes
-rive.on('statechange', (event) => {
-  if (event.data.includes('button_press')) {
-    // Secondary animations auto-trigger via state machine
-  }
-});
-
-// Or blend multiple animations
-rive.play(['main_action', 'secondary_particles']);
-```
+- Add small supporting motion to a main action (ears flop as the body lands, eyes
+  squint during a laugh)
+- Put secondary motion that should play everywhere (blinking, breathing) on its own
+  state machine layer so it runs over every state
+- Use blend states to mix a secondary animation with the main one
 
 ## 9. Timing
 
-```javascript
-// Fast - snappy feedback
-rive.play('click', { speed: 1.5 });
-
-// Normal
-rive.play('hover');
-
-// Slow - dramatic reveal
-rive.play('reveal', { speed: 0.5 });
-```
-
 In Rive Editor:
-- Adjust animation duration
+- Adjust animation duration and keyframe spacing: fewer frames feel snappy, more
+  frames feel heavy or dramatic
 - Use work area to fine-tune timing
 - Graph Editor for precise control
 
@@ -137,43 +104,13 @@ Design in Rive:
 - Pleasing color palette
 - Clean bone structure
 
-```javascript
-// Smooth hover interactions
-const hover = inputs.find(i => i.name === 'isHovering');
-element.addEventListener('mouseenter', () => hover.value = true);
-element.addEventListener('mouseleave', () => hover.value = false);
-```
-
-## React Implementation
-
-```jsx
-import { useRive, useStateMachineInput } from '@rive-app/react-canvas';
-
-function AnimatedButton() {
-  const { rive, RiveComponent } = useRive({
-    src: 'button.riv',
-    stateMachines: 'Button',
-    autoplay: true
-  });
-
-  const hoverInput = useStateMachineInput(rive, 'Button', 'isHovering');
-
-  return (
-    <RiveComponent
-      onMouseEnter={() => hoverInput.value = true}
-      onMouseLeave={() => hoverInput.value = false}
-    />
-  );
-}
-```
-
 ## Key Rive Features
 
 - **State Machines** - Logic-driven animation flow
-- **Inputs** - Boolean, Number, Trigger types
+- **Layers** - Run ambient animations over every state
 - **Blend States** - Mix multiple animations
 - **Listeners** - Pointer events in editor
 - **Constraints** - IK, path, distance, rotation
 - **Bones & Meshes** - Skeletal animation
-- **Runtime API** - Full control from code
+- **Data Binding** - View model properties drive the state machine
 - **Tiny file size** - Optimized binary format

@@ -44,11 +44,13 @@ Claude reads automatically; each project's details live in `docs/BRIEF.md`.
 
 1. `Do stage 1.`
 2. `Do stage 2.` (or give feedback first)
-3. `Do stage 3.`
+3. `Do stage 3.` (builds the next animation only; repeat until all are done)
 4. `Do stage 4.`
 5. Export the `.riv` into `rive/`, then: `Do stage 5.`
 
-Claude stops after each stage so you can review it in Rive.
+Claude stops after each stage so you can review it in Rive. In stage 3 it builds one
+animation at a time: it describes the plan, waits for your OK, builds it, then stops
+for your feedback before moving on to the next.
 
 ## Improving the template
 
