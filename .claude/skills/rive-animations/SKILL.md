@@ -13,6 +13,19 @@ Editor, bones, constraints and state machines.
 > state machine inputs). The app drives the animation only through view model data
 > binding, as described in `CLAUDE.md`; follow that for anything runtime-related.
 
+## In this template
+
+The animation is written as RML with the Rive CLI, not built by hand in the Editor.
+The Editor features named below (timelines, easing, layers, blend states) have RML
+equivalents; look them up with `rive schema` and `rive docs --search`. Keyframe easing
+replaces the Graph Editor.
+
+When the brief plans an art pass, animate the named groups, never the placeholder
+shapes inside them, and leave bones, meshes, IK and path animation to the art pass.
+Where a principle below needs those (squash and stretch, arcs, follow-through), get the
+same effect with group scale, rotation and keyframe offsets. See "Swappable
+placeholders" in `CLAUDE.md`.
+
 ## 1. Squash and Stretch
 
 In Rive Editor:

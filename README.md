@@ -1,65 +1,102 @@
-# Claude + Rive mascot starter
+# Claude + Rive starter
 
-A reusable template for building an interactive Rive mascot with Claude Code and
-dropping it into an app (Flutter by default). The rules live in `CLAUDE.md`, which
-Claude reads automatically; each project's details live in `docs/BRIEF.md`.
+A reusable template for building anything in Rive with Claude Code and the Rive CLI:
+characters and mascots, games, interactive UI, logo reveals and other motion pieces.
+You write (or talk through) a brief; Claude plans, builds, tests and delivers it,
+stopping for your review after every step.
 
-## What's inside
+Claude builds everything in code first. If you want hand-made art, it builds with
+swappable placeholders, pushes the project to your Rive account, and you add the real
+art in the Rive Editor before Claude finishes. The motion is keyed on named groups
+rather than on the shapes inside them, so it carries over to the new art.
+
+## How it's organised
 
 ```
 .
-├── CLAUDE.md                      # reusable rules and stages for Claude
-├── .mcp.json                      # connects Claude Code to the Rive editor
-├── .claude/skills/rive-animations # animation-principles skill (MIT, Dylan Tarre)
-├── docs/BRIEF.example.md          # example brief (food-ordering mascot)
-├── design/                        # put your artwork here (mascot.svg)
-├── rive/                          # exported .riv goes here
-└── app/                           # your app
+├── CLAUDE.md                       # rules and stages for every project
+├── playbooks/                      # how to plan, build and test each kind
+│   ├── character.md                #   mascots, avatars, guides
+│   ├── game.md                     #   small interactive games
+│   ├── ui.md                       #   buttons, loaders, components
+│   └── motion.md                   #   logo reveals, hero animations, explainers
+├── docs/BRIEF.template.md          # blank brief
+├── examples/briefs/                # a filled-in brief for each kind
+├── .claude/skills/rive-animations  # animation-principles skill (MIT, Dylan Tarre)
+├── design/                         # optional reference art, sketches or mockups
+├── rive/                           # Claude creates the Rive CLI project here
+└── app/                            # your app, if the project goes into one
 ```
+
+`CLAUDE.md` holds the rules that never change. Each playbook adds what's specific to
+one kind of project: the questions to ask, what to build first, the milestones and how
+to test them. Your project's details live in `docs/BRIEF.md`, and its progress in
+`docs/PROGRESS.md`, so you can stop at any point and pick up in a new session.
 
 ## Requirements
 
 - [Claude Code](https://claude.com/claude-code)
-- [Rive desktop app](https://rive.app/downloads) (macOS or Windows)
-- Flutter SDK (or the SDK for the platform in your brief)
-- A Rive Cadet plan or higher, only when you export the final `.riv`
+- [Rive CLI](https://rive.app/docs/cli/getting-started) on macOS (Apple Silicon),
+  Windows or Linux
+- A Rive account, for an art pass or a Rive-hosted web page
+- The Rive Editor ([web or desktop](https://rive.app/docs/editor)), only for an art pass
+- The SDK for your app's platform (Flutter by default), only if the project goes into
+  an app
+- A Rive Cadet plan or higher, only for a final signed file without a watermark
 
 ## Start a new project
 
-1. Create a copy of this repo (on GitHub: **Use this template**) and open it in VS Code.
-2. Write the brief, either way:
-   - Let Claude Code interview you: run `claude` and say `Let's start.`
-   - Or copy `docs/BRIEF.example.md` to `docs/BRIEF.md` and fill it in (a chat with
-     Claude can draft it for you).
-3. Save your artwork in `design/`. Put every moving part in its own named group
-   (`head`, `eye_L`, `eye_R`, `arm_L`, ...), outline any text, and export with inline
-   styles / presentation attributes.
-4. Create the app, for Flutter: `flutter create app`
-5. Open the Rive desktop app, create a file with the artboard named in the brief, drag
-   in your artwork, save, and keep Rive open.
-6. In this folder run `claude`. Approve the `rive` MCP server when asked, then check
-   it with `/mcp`.
+1. On GitHub, click **Use this template**, then clone your copy and open it.
+2. Install the Rive CLI, then run `rive login` and `rive doctor`.
+3. Write the brief, either way:
+   - Run `claude` and say `Let's start.` Claude asks what you're making and interviews
+     you with the right playbook's questions.
+   - Or copy `docs/BRIEF.template.md` to `docs/BRIEF.md` and fill it in, using
+     `examples/briefs/` as a guide. Then run `claude` and say `Let's start.`
+4. Optional: put reference art, sketches or mockups in `design/`.
+5. Once Claude has created the Rive project (stage 2), run `rive rive/<file>` in a
+   second terminal to watch the preview update as Claude works.
 
-## Prompts
+## Stages
 
-1. `Do stage 1.`
-2. `Do stage 2.` (or give feedback first)
-3. `Do stage 3.` (builds the next animation only; repeat until all are done)
-4. `Do stage 4.`
-5. Export the `.riv` into `rive/`, then: `Do stage 5.`
+| Say                    | What happens                                                       |
+|------------------------|--------------------------------------------------------------------|
+| `Let's start.`         | 1. Brief: Claude interviews you, you approve                       |
+| `Do stage 2.`          | 2. Rive project, plan and skeleton (names, groups, view models)    |
+| `Do stage 3.` (repeat) | 3. One milestone at a time: plan, your OK, build, test, feedback   |
+| `Do stage 4.`          | 4. Delivery: into the app, a Rive-hosted web page, or a `.riv` file |
+| `Do stage 5.`          | 5. Art pass only: push to Rive and write the art-pass notes        |
+| (you, in the Editor)   | Art pass, following `docs/ART_PASS.md`                             |
+| `Do stage 6.`          | 6. Finish: pull the art if any, final checks, final file           |
 
-Claude stops after each stage so you can review it in Rive. In stage 3 it builds one
-animation at a time: it describes the plan, waits for your OK, builds it, then stops
-for your feedback before moving on to the next.
+Claude stops after each stage so you can review it. Coming back later? Run `claude` and
+ask `Where are we?`
 
-## Improving the template
+## The art pass
 
-When a project teaches you something reusable, add it to `CLAUDE.md` here so the next
-project starts with it. Keep project details out of `CLAUDE.md`; they belong in the
-brief.
+Only if your brief plans one. Open the pushed file in the Rive Editor (the link is in
+`docs/ART_PASS.md`). In each group, delete the `_ph` placeholder and put the real art in
+its place: draw it, or import your SVG and move each piece into the matching group.
+Don't move, rename or delete the groups; the animations live on them. Then tell Claude
+the art is done and say `Do stage 6.`
+
+A push replaces the Rive file's content, including your art, so Claude always pulls
+your changes before it pushes again. Earlier versions also stay in the Editor's
+revision history.
+
+## Maintaining the template
+
+- In this repo's GitHub settings, tick **Template repository** so **Use this template**
+  appears.
+- When a project teaches you something reusable, add it to `CLAUDE.md` or the
+  playbook for that kind. Claude suggests these lines as you go.
+- For a new kind of project (data visualisation, interactive story, ...), add a
+  `playbooks/<kind>.md` with the same sections as the others, and an example brief.
+- Keep project details out of `CLAUDE.md` and `playbooks/`; they belong in the brief.
 
 ## Credits
 
-`.claude/skills/rive-animations` is from
+`.claude/skills/rive-animations` is adapted from
 [dylantarre/animation-principles](https://github.com/dylantarre/animation-principles)
-under the MIT license; see its `LICENSE` file.
+under the MIT license; see its `LICENSE` file. It has been edited for this template, so
+don't re-sync it from upstream.
