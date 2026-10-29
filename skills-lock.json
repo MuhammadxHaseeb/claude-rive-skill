@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "rive-animations": {
+      "source": "dylantarre/animation-principles",
+      "sourceType": "github",
+      "skillPath": "skills/09-by-tool-framework/rive-animations/SKILL.md",
+      "computedHash": "c05ef8a1cee3bea021a88f0e5916caf994eefa07834a8d947c0b35024f80d4d5"
+    }
+  }
+}
